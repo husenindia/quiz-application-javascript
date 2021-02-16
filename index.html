@@ -3,24 +3,53 @@
     <title>Online Quiz</title>
     <style>
         body { display:flex; align-items: center;  justify-content: center;}
-    #quiz { background:#eee; padding: 20px; flex-grow: 1; max-width: 600px; margin: 30px auto; border-radius: 8px; border: 1px solid #CCC; }
-    body { font-family: Arial, Helvetica, sans-serif;}
-    #question { font-weight: bold;  font-size: 20px; }
-    button { border-radius: 20px; text-transform: capitalize; cursor: pointer; height:40px; line-height: 38px; padding:0 30px; font-size:16px; font-weight: bold; border:1px solid #CCC; margin-right:15px; background: #000e54; color:#FFF; }
-    button:hover { background-color:#000;}
-    .pagination { font-size: 16px; font-weight: bold; margin-top: 80px;}    
-    #totalNumberOfQuestions { opacity: 0.50; margin-left: 5px;} 
-
+        .quizcontainer { background:#eee; padding: 20px; flex-grow: 1; max-width: 800px; margin: 30px auto; border-radius: 8px; border: 1px solid #CCC; }
+        body { font-family: Arial, Helvetica, sans-serif;}
+        #question { font-weight: bold;  font-size: 20px; }
+        button { border-radius: 20px; text-transform: capitalize; cursor: pointer; height:40px; line-height: 38px; padding:0 30px; font-size:16px; font-weight: bold; border:1px solid #CCC; margin-right:15px; background: #000e54; color:#FFF; float:left; }
+        button:hover { background-color:#000;}
+        .pagination { font-size: 16px; font-weight: bold; margin-top: 80px;}    
+        #totalNumberOfQuestions { opacity: 0.50; margin-left: 5px;} 
+        .navigation button { background-color: #3c3c3c;}
+        .navigation button:hover { background-color: #000;} 
+        .lockedAnswer { background-color: yellow !important; color:#000 !important; }
+        .correctAnswer { background-color: green !important; color:#fff !important; }
+        #scoreCard {display: none; }
+        button:disabled { background-color:#CCC; color:#FFF; pointer-events: none; }
+        #gotoScoreCardBtn { display: none; float:right; }
+        .quiz-ended #choiceListing button { pointer-events: none;}
+        .title { font-size:34px; border-bottom: 1px solid #CCC;  padding: 10px 0 20px 0; margin-bottom: 30px; font-weight: bold;}        
+        .quiz-ended .quizended { display:block; }
+        .quiz-ended .quizstarted, .quizended { display:none; }
     </style>
     </head>
     <body>
-        <div id="quiz">
-            <p id="question"></p>
-            <br>
-            <div id="choiceListing">
+        <div class="quizcontainer">
+            <div>
+                <div id="quiz">
+                    <div class="title quizstarted">Quiz</div>
+                    <div class="title quizended">Quiz Ended</div>
+                    
+                    <p id="question"></p>
+                    <br>
+                    <div id="choiceListing">
+                    </div>
+                    <p class="pagination">Question <span id="currentQuestionNo"></span> of <span id="totalNumberOfQuestions"></span></p>
+                    
+                    <div class="naviagtion">
+                        <button id="prevBtn" onclick="prevQuestion()">Previous Question</button>
+                        <button id="nextBtn" onclick="nextQuestion()">Next Question</button>                    
+                        <button id="gotoScoreCardBtn" onclick="showScore()">Goto Score card</button>
+                    </div>
+                </div>
+                <div id="scoreCard">
+                    <div class="title">Result</div>
+                    <h2>Your Score is: <span id="quizScore"></span></h2>
+                    <button id="viewAnswers" onclick="viewAnswers()">View Answers</button>
+                </div>
             </div>
-            <p class="pagination">Question <span id="currentQuestionNo"></span> of <span id="totalNumberOfQuestions"></span></p>
         </div>
+
     </body>
     <script src="question.js" type="text/javascript"></script>
     <script src="quizController.js" type="text/javascript"></script>

@@ -1,38 +1,83 @@
-function showNextQuestion() {
-    console.log("show next que");
+var userChoice = new Array();
+var quizEnded = false;
+var questions = [
+    new Questions("Que 1", ["1 ans 1", "1 ans 2", "1 ans 3", "1 ans 4"], "1 ans 4"),
+    new Questions("Que 2", ["2 ans 1", "2 ans 2", "2 ans 3", "2 ans 4"], "2 ans 4"),
+    new Questions("Que 3", ["3 ans 1", "3 ans 2", "3 ans 3", "3 ans 4"], "3 ans 4"),
+    new Questions("Que 4", ["4 ans 1", "4 ans 2", "4 ans 3", "4 ans 4"], "4 ans 4"),
+    // new Questions("Que 5", ["5 ans 1", "5 ans 2", "5 ans 3", "5 ans 4"], "5 ans 4"),    
+]
+var quiz = new Quiz(questions);
+
+function showQuestion() {
     if(quiz.isEnded()) {
-        showScore();
+        showScore();  
+        quizEnded = true;              
     } else {
         var element = document.getElementById("question");
         element.innerHTML = quiz.getCurrentQuestion().questionText;
-        var mainelement = document.getElementById("choiceListing");
-        mainelement.innerHTML = "";
-        for(i=0;i<quiz.getCurrentQuestion().questionOptions.length;i++) {
+        element = document.getElementById("choiceListing");
+        element.innerHTML = "";
+        for(i=0;i<quiz.getCurrentQuestion().questionOptions.length;i++) {            
             var node = document.createElement("button");
             var choiceText = quiz.getCurrentQuestion().questionOptions[i];
             var choiceButtonNode = document.createTextNode(choiceText);
             node.setAttribute("id", "choice0"+ i);
+            if(userChoice[quiz.questionIndex]===i) {
+                node.setAttribute("class","lockedAnswer");
+            }
+            if(quizEnded && quiz.isCorrectAnswer(choiceText)) {
+                node.setAttribute("class","correctAnswer");
+            }
             node.appendChild(choiceButtonNode);
-            mainelement.appendChild(node);
-            setClickForAnswerButton("choice0"+i, choiceText);
-        }
-        currentQuestionNumber();
+            element.appendChild(node);
+            setClickForAnswerButton("choice0"+i, choiceText, i);
+        }        
     }
+    currentQuestionNumber();
+    navigationButtonShowHide(); 
 }
 
-function setClickForAnswerButton(btnId, choiceText) {
-    buttonElement = document.getElementById(btnId);
+function viewAnswers() {
+    showElement("quiz");    
+    hideElement("scoreCard");   
+    quiz.setQuestionIndexToZero();   
+    showQuestion(); 
+}
+
+function setClickForAnswerButton(btnId, choiceText, answerIndex) {
+    var buttonElement = document.getElementById(btnId);    
     buttonElement.onclick = function(){
-        quiz.userGivenAnswer(choiceText);        
-        showNextQuestion();           
+        if(!quizEnded) {
+            userChoice[quiz.questionIndex]=answerIndex;
+            quiz.userGivenAnswer(choiceText);                
+        }
+        showQuestion();           
     }
 }
 
-function showScore() {
-    var infoHeaderText = "<h1>Result</h1>";
-    infoHeaderText += "<h2>Your Score is: " + quiz.score + "</h2>";
-    var element = document.getElementById("quiz");    
-    element.innerHTML = infoHeaderText;
+function showScore() {    
+    showElement("scoreCard");
+    hideElement("quiz");
+    showElement("gotoScoreCardBtn");    
+    var element = document.getElementById("quizScore");
+    element.innerHTML = quiz.score;
+
+    element = document.getElementById("quiz");
+    element.classList.add("quiz-ended");
+}
+
+function navigationButtonShowHide() {
+    if(quiz.questionIndex === 0) {
+        hideElement("prevBtn");
+        showElement("nextBtn");
+    } else if(quiz.questionIndex === (quiz.questions.length-1)) {
+        showElement("prevBtn");
+        hideElement("nextBtn");
+    } else {
+        showElement("prevBtn");
+        showElement("nextBtn");
+    }
 }
 
 function totalNumberOfQuestions() {
@@ -45,15 +90,25 @@ function currentQuestionNumber() {
         currentQuestionNo.innerHTML = quiz.questionIndex + 1;
 }
 
-var questions = [
-    new Questions("Que 1", ["ans 1", "ans 2", "ans 3", "ans 4"], "ans 4"),
-    new Questions("Que 2", ["ans 1", "ans 2", "ans 3", "ans 4"], "ans 4"),
-    new Questions("Que 3", ["ans 1", "ans 2", "ans 3", "ans 4"], "ans 4"),
-    new Questions("Que 4", ["ans 1", "ans 2", "ans 3", "ans 4"], "ans 4"),
-    new Questions("Que 5", ["ans 1", "ans 2", "ans 3", "ans 4"], "ans 4"),
-]
+function nextQuestion() {
+    quiz.questionIndex += 1;
+    showQuestion();
+}
 
-var quiz = new Quiz(questions);
+function prevQuestion() {
+    quiz.questionIndex -= 1;
+    showQuestion();
+}
 
-showNextQuestion();
+function showElement(id) {
+    var element = document.getElementById(id);
+    element.style.display = 'block';
+}
+function hideElement(id) {
+    var element = document.getElementById(id);
+    element.style.display = 'none';
+}
+
+showQuestion();
 totalNumberOfQuestions();
+//setNavigationButtonDisable();

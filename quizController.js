@@ -17,3 +17,10 @@ Quiz.prototype.userGivenAnswer = function(answer) {
     }
     this.questionIndex++;
 }
+Quiz.prototype.isCorrectAnswer = function(answer) {
+    return this.getCurrentQuestion().isCorrectAnswer(answer);
+}
+Quiz.prototype.setQuestionIndexToZero = function() {
+    this.questionIndex = 0;
+}
+
