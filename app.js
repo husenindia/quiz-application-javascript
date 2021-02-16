@@ -8,6 +8,8 @@ var questions = [
     // new Questions("Que 5", ["5 ans 1", "5 ans 2", "5 ans 3", "5 ans 4"], "5 ans 4"),    
 ]
 var quiz = new Quiz(questions);
+showQuestion();
+totalNumberOfQuestions();
 
 function showQuestion() {
     if(quiz.isEnded()) {
@@ -41,6 +43,7 @@ function showQuestion() {
 function viewAnswers() {
     showElement("quiz");    
     hideElement("scoreCard");   
+    hideElement("skipBtn");   
     quiz.setQuestionIndexToZero();   
     showQuestion(); 
 }
@@ -62,7 +65,6 @@ function showScore() {
     showElement("gotoScoreCardBtn");    
     var element = document.getElementById("quizScore");
     element.innerHTML = quiz.score;
-
     element = document.getElementById("quiz");
     element.classList.add("quiz-ended");
 }
@@ -79,6 +81,7 @@ function navigationButtonShowHide() {
         showElement("nextBtn");
     }
 }
+
 
 function totalNumberOfQuestions() {
     var totalNumberOfQuestions = document.getElementById("totalNumberOfQuestions");
@@ -108,7 +111,3 @@ function hideElement(id) {
     var element = document.getElementById(id);
     element.style.display = 'none';
 }
-
-showQuestion();
-totalNumberOfQuestions();
-//setNavigationButtonDisable();
