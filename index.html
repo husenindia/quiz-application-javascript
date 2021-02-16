@@ -1,0 +1,28 @@
+<html>
+    <head>
+    <title>Online Quiz</title>
+    <style>
+        body { display:flex; align-items: center;  justify-content: center;}
+    #quiz { background:#eee; padding: 20px; flex-grow: 1; max-width: 600px; margin: 30px auto; border-radius: 8px; border: 1px solid #CCC; }
+    body { font-family: Arial, Helvetica, sans-serif;}
+    #question { font-weight: bold;  font-size: 20px; }
+    button { border-radius: 20px; text-transform: capitalize; cursor: pointer; height:40px; line-height: 38px; padding:0 30px; font-size:16px; font-weight: bold; border:1px solid #CCC; margin-right:15px; background: #000e54; color:#FFF; }
+    button:hover { background-color:#000;}
+    .pagination { font-size: 16px; font-weight: bold; margin-top: 80px;}    
+    #totalNumberOfQuestions { opacity: 0.50; margin-left: 5px;} 
+
+    </style>
+    </head>
+    <body>
+        <div id="quiz">
+            <p id="question"></p>
+            <br>
+            <div id="choiceListing">
+            </div>
+            <p class="pagination">Question <span id="currentQuestionNo"></span> of <span id="totalNumberOfQuestions"></span></p>
+        </div>
+    </body>
+    <script src="question.js" type="text/javascript"></script>
+    <script src="quizController.js" type="text/javascript"></script>
+    <script src="app.js" type="text/javascript"></script>
+</html>
